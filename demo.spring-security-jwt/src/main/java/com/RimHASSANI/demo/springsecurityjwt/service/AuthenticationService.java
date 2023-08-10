@@ -3,7 +3,9 @@ package com.RimHASSANI.demo.springsecurityjwt.service;
 import com.RimHASSANI.demo.springsecurityjwt.model.ApplicationUser;
 import com.RimHASSANI.demo.springsecurityjwt.model.LoginResponseUserDTO;
 import com.RimHASSANI.demo.springsecurityjwt.model.Role;
+import com.RimHASSANI.demo.springsecurityjwt.model.Transporteur;
 import com.RimHASSANI.demo.springsecurityjwt.repository.RoleRepository;
+import com.RimHASSANI.demo.springsecurityjwt.repository.TransporteurRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,11 @@ public class AuthenticationService {
     private UserRepository userRepository;
 
     @Autowired
+    private TransporteurRepository transporteurRepository;
+
+    @Autowired
     private RoleRepository roleRepository;
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -64,4 +70,16 @@ public class AuthenticationService {
     }
 
 
+
+    public Transporteur registerTransporteur(String firstName, String lastName, Integer phoneNumber, String email, String password) {
+        String encodedPassword = passwordEncoder.encode(password);
+        Role userRole = roleRepository.findByAuthority("TRANSPORTEUR").get();
+
+        Set<Role> authorities = new HashSet<>();
+
+        authorities.add(userRole);
+
+        return transporteurRepository.save(new Transporteur(0, firstName,lastName,phoneNumber,email, encodedPassword, authorities));
+
+    }
 }

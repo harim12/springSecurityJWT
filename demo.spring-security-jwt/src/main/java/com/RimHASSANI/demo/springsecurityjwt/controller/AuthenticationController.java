@@ -1,8 +1,6 @@
 package com.RimHASSANI.demo.springsecurityjwt.controller;
 
-import com.RimHASSANI.demo.springsecurityjwt.model.ApplicationUser;
-import com.RimHASSANI.demo.springsecurityjwt.model.LoginResponseUserDTO;
-import com.RimHASSANI.demo.springsecurityjwt.model.RegistrationUserDTO;
+import com.RimHASSANI.demo.springsecurityjwt.model.*;
 import com.RimHASSANI.demo.springsecurityjwt.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,4 +29,19 @@ public class AuthenticationController {
                 body.getEmail(),
                 body.getPassword());
     }
+
+    @PostMapping("/register/transporteur")
+    public Transporteur registerTransporteur(@RequestBody RegistrationTransporteurDTO body){
+        return authenticationService.registerTransporteur(
+                body.getFirstName(),
+                body.getLastName(),
+                body.getPhoneNumber(),
+                body.getEmail(),
+                body.getPassword()
+        );
+    }
+
+
+
+
 }
