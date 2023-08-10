@@ -1,19 +1,15 @@
 package com.RimHASSANI.demo.springsecurityjwt.model;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-
-public class LoginResponseDTO {
+public class LoginResponseUserDTO {
     private ApplicationUser user;
     private String jwt;
 
-    public LoginResponseDTO(){
+    public LoginResponseUserDTO(){
         super();
     }
 
-    public LoginResponseDTO(ApplicationUser user, String jwt){
+    public LoginResponseUserDTO(ApplicationUser user, String jwt){
         this.user = user;
         this.jwt = jwt;
     }

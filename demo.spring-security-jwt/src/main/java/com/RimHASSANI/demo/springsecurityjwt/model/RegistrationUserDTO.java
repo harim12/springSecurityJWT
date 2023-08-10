@@ -1,7 +1,6 @@
 package com.RimHASSANI.demo.springsecurityjwt.model;
 
 import lombok.*;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Data
 @NoArgsConstructor
@@ -9,7 +8,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Getter
 @Setter
 @ToString
-public class RegistrationDTO {
+public class RegistrationUserDTO {
     private String username;
+
+    private String firstName;
+    private String lastName;
     private String password;
+    private String email;
+
 }

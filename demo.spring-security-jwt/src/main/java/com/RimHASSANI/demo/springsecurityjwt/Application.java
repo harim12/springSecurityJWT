@@ -22,14 +22,14 @@ public class Application {
 	@Bean
 	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncode){
 		return args ->{
-			if(roleRepository.findByAuthority("ADMIN").isPresent()) return;
-			Role adminRole = roleRepository.save(new Role("ADMIN"));
+			if(roleRepository.findByAuthority("TRANSPORTEUR").isPresent()) return;
+			Role adminRole = roleRepository.save(new Role("TRANSPORTEUR"));
 			roleRepository.save(new Role("USER"));
 
 			Set<Role> roles = new HashSet<>();
 			roles.add(adminRole);
 
-			ApplicationUser admin = new ApplicationUser(1, "admin", passwordEncode.encode("password"), roles);
+			ApplicationUser admin = new ApplicationUser(1, "rim","hassani","hassaniidrissirim190@gmail.com", passwordEncode.encode("password"), roles);
 
 			userRepository.save(admin);
 		};

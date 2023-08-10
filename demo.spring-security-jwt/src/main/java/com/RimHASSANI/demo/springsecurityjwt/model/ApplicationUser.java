@@ -11,14 +11,21 @@ import java.util.Set;
 
 @Entity
 @Table(name="users")
+@Data
 
+@Getter
+@Setter
 public class ApplicationUser implements UserDetails {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer userId;
+
+    private String firstName;
+    private String lastName;
     @Column(unique=true)
-    private String username;
+    private String email;
+
     private String password;
 
     @ManyToMany(fetch=FetchType.EAGER)
@@ -35,25 +42,16 @@ public class ApplicationUser implements UserDetails {
     }
 
 
-    public ApplicationUser(Integer userId, String username, String password, Set<Role> authorities) {
+    public ApplicationUser(Integer userId,String firstName,String lastName,String email, String password, Set<Role> authorities) {
         super();
         this.userId = userId;
-        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public Integer getUserId() {
-        return this.userId;
-    }
-
-    public void setId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public void setAuthorities(Set<Role> authorities) {
-        this.authorities = authorities;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -67,19 +65,15 @@ public class ApplicationUser implements UserDetails {
         return this.password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+
 
     @Override
     public String getUsername() {
         // TODO Auto-generated method stub
-        return this.username;
+        return this.email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+
 
     /* If you want account locking capabilities create variables and ways to set them for the methods below */
     @Override

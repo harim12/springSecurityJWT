@@ -1,7 +1,7 @@
 package com.RimHASSANI.demo.springsecurityjwt.service;
 
 import com.RimHASSANI.demo.springsecurityjwt.model.ApplicationUser;
-import com.RimHASSANI.demo.springsecurityjwt.model.LoginResponseDTO;
+import com.RimHASSANI.demo.springsecurityjwt.model.LoginResponseUserDTO;
 import com.RimHASSANI.demo.springsecurityjwt.model.Role;
 import com.RimHASSANI.demo.springsecurityjwt.repository.RoleRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
@@ -35,7 +35,7 @@ public class AuthenticationService {
     @Autowired
     private TokenService tokenService;
 
-    public ApplicationUser registerUser(String username, String password){
+    public ApplicationUser registerUser(String firstName, String lastName,String email,String password){
 
         String encodedPassword = passwordEncoder.encode(password);
         Role userRole = roleRepository.findByAuthority("USER").get();
@@ -44,22 +44,22 @@ public class AuthenticationService {
 
         authorities.add(userRole);
 
-        return userRepository.save(new ApplicationUser(0, username, encodedPassword, authorities));
+        return userRepository.save(new ApplicationUser(0, firstName,lastName,email, encodedPassword, authorities));
     }
 
-    public LoginResponseDTO loginUser(String username, String password){
+    public LoginResponseUserDTO loginUser(String email, String password){
 
         try{
             Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
+                    new UsernamePasswordAuthenticationToken(email, password)
             );
 
             String token = tokenService.generateJwt(auth);
 
-            return new LoginResponseDTO(userRepository.findByUsername(username).get(), token);
+            return new LoginResponseUserDTO(userRepository.findByEmail(email).get(), token);
 
         } catch(AuthenticationException e){
-            return new LoginResponseDTO(null, "");
+            return new LoginResponseUserDTO(null, "");
         }
     }
 
