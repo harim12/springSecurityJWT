@@ -22,7 +22,7 @@ public class TokenService {
 
     public String generateJwt(Authentication auth){
 
-        Instant now =  Instant.now();
+        Instant now = Instant.now();
 
         String scope = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -32,9 +32,9 @@ public class TokenService {
                 .issuer("self")
                 .issuedAt(now)
                 .subject(auth.getName())
-                .claim("roles",scope)
+                .claim("roles", scope)
                 .build();
 
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue() ;
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }

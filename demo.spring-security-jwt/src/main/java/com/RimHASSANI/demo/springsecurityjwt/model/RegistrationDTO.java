@@ -8,12 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class RegistrationDTO {
     private String username;
     private String password;
-
-
-        public String toString(){
-        return "Registration info : name: "+username+"password: "+password;
-    }
 }
