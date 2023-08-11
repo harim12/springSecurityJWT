@@ -1,12 +1,15 @@
 package com.RimHASSANI.demo.springsecurityjwt.service;
 
-import com.RimHASSANI.demo.springsecurityjwt.model.*;
+import com.RimHASSANI.demo.springsecurityjwt.model.ApplicationUser;
+import com.RimHASSANI.demo.springsecurityjwt.model.LoginResponseUserDTO;
+import com.RimHASSANI.demo.springsecurityjwt.model.Role;
 import com.RimHASSANI.demo.springsecurityjwt.repository.RoleRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.TransporteurRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,10 +19,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
-
 @Service
 @Transactional
-public class AuthenticationService {
+public class AuthentificationUserService {
     @Autowired
     private UserRepository userRepository;
 
@@ -38,23 +40,35 @@ public class AuthenticationService {
 
     @Autowired
     private TokenService tokenService;
+    @Qualifier("userAuthenticationManager")
+    private final AuthenticationManager userAuthenticationManager;
+    @Autowired
+    public AuthentificationUserService(
+            @Qualifier("userAuthenticationManager") AuthenticationManager userAuthenticationManager) {
+        this.userAuthenticationManager = userAuthenticationManager;
 
-    public ApplicationUser registerUser(String firstName, String lastName,String email,String password){
+    }
 
-        String encodedPassword = passwordEncoder.encode(password);
-        Role userRole = roleRepository.findByAuthority("USER").get();
+    public ApplicationUser registerUser(String firstName, String lastName, String email, String password){
 
-        Set<Role> authorities = new HashSet<>();
+        try {
+            String encodedPassword = passwordEncoder.encode(password);
+            Role userRole = roleRepository.findByAuthority("USER").get();
 
-        authorities.add(userRole);
+            Set<Role> authorities = new HashSet<>();
+            authorities.add(userRole);
 
-        return userRepository.save(new ApplicationUser(0, firstName,lastName,email, encodedPassword, authorities));
+            return userRepository.save(new ApplicationUser(0, firstName, lastName, email, encodedPassword, authorities));
+        } catch (DataIntegrityViolationException e) {
+            // Handle the case when the email already exists
+            throw new RuntimeException("Email already exists");
+        }
     }
 
     public LoginResponseUserDTO loginUser(String email, String password){
 
         try{
-            Authentication auth = authenticationManager.authenticate(
+            Authentication auth = this.userAuthenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(email, password)
             );
 
@@ -67,17 +81,4 @@ public class AuthenticationService {
         }
     }
 
-
-
-    public Transporteur registerTransporteur(String firstName, String lastName, Integer phoneNumber, String email, String password) {
-        String encodedPassword = passwordEncoder.encode(password);
-        Role userRole = roleRepository.findByAuthority("TRANSPORTEUR").get();
-
-        Set<Role> authorities = new HashSet<>();
-
-        authorities.add(userRole);
-
-        return transporteurRepository.save(new Transporteur(0, firstName,lastName,phoneNumber,email, encodedPassword, authorities));
-
-    }
 }

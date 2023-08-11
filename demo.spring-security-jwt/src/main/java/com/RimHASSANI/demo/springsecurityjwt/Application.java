@@ -29,9 +29,7 @@ public class Application {
 			Set<Role> roles = new HashSet<>();
 			roles.add(adminRole);
 
-			ApplicationUser admin = new ApplicationUser(1, "rim","hassani","hassaniidrissirim190@gmail.com", passwordEncode.encode("password"), roles);
 
-			userRepository.save(admin);
 		};
 	}
 }

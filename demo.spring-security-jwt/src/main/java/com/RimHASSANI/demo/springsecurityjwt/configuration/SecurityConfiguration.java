@@ -1,5 +1,7 @@
 package com.RimHASSANI.demo.springsecurityjwt.configuration;
 
+import com.RimHASSANI.demo.springsecurityjwt.service.TransporteurService;
+import com.RimHASSANI.demo.springsecurityjwt.service.UserService;
 import com.RimHASSANI.demo.springsecurityjwt.utils.RSAKeyProperties;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
@@ -7,9 +9,13 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,13 +46,60 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
+   /* @Bean
     public AuthenticationManager authManager(UserDetailsService detailsService){
         DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
         daoProvider.setUserDetailsService(detailsService);
         daoProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(daoProvider);
+    }*/
+
+
+   /* @Bean(name = "userAuthenticationManager")
+    public AuthenticationManager userAuthenticationManager() throws Exception {
+        DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
+        daoProvider.setUserDetailsService(userDetailsService);
+        daoProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(daoProvider);
     }
+
+    @Bean(name = "transporteurAuthenticationManager")
+    public AuthenticationManager transporteurAuthenticationManager() throws Exception {
+        DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
+        daoProvider.setUserDetailsService(transporteurDetailsService);
+        daoProvider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(daoProvider);
+    }*/
+
+
+    @Bean(name = "userAuthenticationProvider")
+    public AuthenticationProvider userAuthenticationProvider(@Qualifier("userService") UserDetailsService userDetailsService) {
+        DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
+        daoProvider.setUserDetailsService(userDetailsService);
+        daoProvider.setPasswordEncoder(passwordEncoder());
+        return daoProvider;
+    }
+
+    @Bean(name = "transporteurAuthenticationProvider")
+    public AuthenticationProvider transporteurAuthenticationProvider(@Qualifier("transporteurService") TransporteurService transporteurDetailsService) {
+        DaoAuthenticationProvider daoProvider = new DaoAuthenticationProvider();
+        daoProvider.setUserDetailsService(transporteurDetailsService);
+        daoProvider.setPasswordEncoder(passwordEncoder());
+        return daoProvider;
+    }
+
+    @Bean(name = "userAuthenticationManager")
+    @Primary
+    public ProviderManager userAuthenticationManager(@Qualifier("userAuthenticationProvider") AuthenticationProvider userAuthenticationProvider) {
+        return new ProviderManager(userAuthenticationProvider);
+    }
+
+    @Bean(name = "transporteurAuthenticationManager")
+    public ProviderManager transporteurAuthenticationManager(@Qualifier("transporteurAuthenticationProvider") AuthenticationProvider transporteurAuthenticationProvider) {
+        return new ProviderManager(transporteurAuthenticationProvider);
+    }
+
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{

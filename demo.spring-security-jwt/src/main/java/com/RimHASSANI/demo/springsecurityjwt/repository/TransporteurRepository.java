@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface TransporteurRepository extends JpaRepository<Transporteur,Integer> {
-    Optional<ApplicationUser> findByEmail(String email);
+    Optional<Transporteur> findByEmail(String email);
 
 }
