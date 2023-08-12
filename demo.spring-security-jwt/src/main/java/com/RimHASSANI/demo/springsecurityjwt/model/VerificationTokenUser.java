@@ -8,9 +8,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity
+@Table(name = "verification_token_user")
 @Data
 @NoArgsConstructor
-public class VerificationToken {
+public class VerificationTokenUser {
 
     private static  final int EXPIRATION_TIME = 10;
     @Id
@@ -27,14 +28,14 @@ public class VerificationToken {
             foreignKey = @ForeignKey(name = "FK_USER_VERIFY_TOKEN"))
     private ApplicationUser user;
 
-    public VerificationToken(ApplicationUser user, String token) {
+    public VerificationTokenUser(ApplicationUser user, String token) {
         super();
         this.token = token;
         this.user = user;
         this.expirationTime = calculateExpirationDate(EXPIRATION_TIME);
     }
 
-    public VerificationToken(String token) {
+    public VerificationTokenUser(String token) {
         super();
         this.token = token;
         this.expirationTime = calculateExpirationDate(EXPIRATION_TIME);

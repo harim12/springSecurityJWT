@@ -3,11 +3,11 @@ package com.RimHASSANI.demo.springsecurityjwt.service;
 import com.RimHASSANI.demo.springsecurityjwt.model.ApplicationUser;
 import com.RimHASSANI.demo.springsecurityjwt.model.LoginResponseUserDTO;
 import com.RimHASSANI.demo.springsecurityjwt.model.Role;
-import com.RimHASSANI.demo.springsecurityjwt.model.VerificationToken;
+import com.RimHASSANI.demo.springsecurityjwt.model.VerificationTokenUser;
 import com.RimHASSANI.demo.springsecurityjwt.repository.RoleRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.TransporteurRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
-import com.RimHASSANI.demo.springsecurityjwt.repository.VerificationTokenRepository;
+import com.RimHASSANI.demo.springsecurityjwt.repository.UserVerificationTokenRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,7 +47,7 @@ public class AuthentificationUserService {
     private TokenService tokenService;
 
     @Autowired
-    private VerificationTokenRepository verificationTokenRepository;
+    private UserVerificationTokenRepository verificationTokenRepository;
 
 
     @Qualifier("userAuthenticationManager")
@@ -92,15 +92,15 @@ public class AuthentificationUserService {
     }
 
     public void saveVerificationTokenForUser(String token, ApplicationUser user) {
-        VerificationToken verificationToken
-                = new VerificationToken(user, token);
+        VerificationTokenUser verificationToken
+                = new VerificationTokenUser(user, token);
 
         verificationTokenRepository.save(verificationToken);
     }
 
 
     public String validateVerificationToken(String token) {
-        VerificationToken verificationToken
+        VerificationTokenUser verificationToken
                 = verificationTokenRepository.findByToken(token);
 
         if (verificationToken == null) {
@@ -122,8 +122,8 @@ public class AuthentificationUserService {
 
 
 
-    public VerificationToken generateNewVerificationToken(String oldToken) {
-        VerificationToken verificationToken
+    public VerificationTokenUser generateNewVerificationToken(String oldToken) {
+        VerificationTokenUser verificationToken
                 = verificationTokenRepository.findByToken(oldToken);
         verificationToken.setToken(UUID.randomUUID().toString());
         verificationTokenRepository.save(verificationToken);

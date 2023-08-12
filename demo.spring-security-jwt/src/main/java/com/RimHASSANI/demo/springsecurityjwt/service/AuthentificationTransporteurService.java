@@ -1,11 +1,7 @@
 package com.RimHASSANI.demo.springsecurityjwt.service;
 
-import com.RimHASSANI.demo.springsecurityjwt.model.LoginResponseTransporteurDTO;
-import com.RimHASSANI.demo.springsecurityjwt.model.Role;
-import com.RimHASSANI.demo.springsecurityjwt.model.Transporteur;
-import com.RimHASSANI.demo.springsecurityjwt.repository.RoleRepository;
-import com.RimHASSANI.demo.springsecurityjwt.repository.TransporteurRepository;
-import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
+import com.RimHASSANI.demo.springsecurityjwt.model.*;
+import com.RimHASSANI.demo.springsecurityjwt.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,8 +13,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
+
 @Service
 @Transactional
 public class AuthentificationTransporteurService {
@@ -41,6 +40,9 @@ public class AuthentificationTransporteurService {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private TransporteurVerificationTokenRepository verificationTokenRepository;
 
     @Qualifier("transporteurAuthenticationManager")
     private final AuthenticationManager transporteurAuthenticationManager;
@@ -82,5 +84,44 @@ public class AuthentificationTransporteurService {
         } catch(AuthenticationException e){
             return new LoginResponseTransporteurDTO(null, "");
         }
+    }
+
+
+    public void saveVerificationTokenForUser(String token, Transporteur user) {
+        VerificationTokenTransporteur verificationToken
+                = new VerificationTokenTransporteur(user, token);
+
+        verificationTokenRepository.save(verificationToken);
+    }
+
+
+    public String validateVerificationToken(String token) {
+        VerificationTokenTransporteur verificationToken = verificationTokenRepository.findByToken(token);
+
+        if (verificationToken == null) {
+            return "invalid";
+        }
+
+        Transporteur user = verificationToken.getTransporteur();
+        Calendar cal = Calendar.getInstance();
+
+        if ((verificationToken.getExpirationTime().getTime()
+                - cal.getTime().getTime()) <= 0) {
+            verificationTokenRepository.delete(verificationToken);
+            return "expired";
+        }
+        user.setManuallyEnabled(true);
+        transporteurRepository.save(user);  // Save the updated user
+        return "valid";
+    }
+
+
+
+    public VerificationTokenTransporteur generateNewVerificationToken(String oldToken) {
+        VerificationTokenTransporteur verificationToken
+                = verificationTokenRepository.findByToken(oldToken);
+        verificationToken.setToken(UUID.randomUUID().toString());
+        verificationTokenRepository.save(verificationToken);
+        return verificationToken;
     }
 }

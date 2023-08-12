@@ -1,10 +1,12 @@
 package com.RimHASSANI.demo.springsecurityjwt.controller;
 
-import com.RimHASSANI.demo.springsecurityjwt.event.RegistrationCompleteEvent;
+import com.RimHASSANI.demo.springsecurityjwt.event.TransporteurRegistrationCompleteEvent;
+import com.RimHASSANI.demo.springsecurityjwt.event.UserRegistrationCompleteEvent;
 import com.RimHASSANI.demo.springsecurityjwt.model.*;
-import com.RimHASSANI.demo.springsecurityjwt.service.AuthenticationService;
 import com.RimHASSANI.demo.springsecurityjwt.service.AuthentificationTransporteurService;
 import com.RimHASSANI.demo.springsecurityjwt.service.AuthentificationUserService;
+import com.RimHASSANI.demo.springsecurityjwt.utils.EmailUtil;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,10 @@ public class AuthenticationController {
     @Autowired
     private ApplicationEventPublisher publisher;
 
-    @PostMapping("/register/user")
+    @Autowired
+    private EmailUtil emailUtil;
+
+    @PostMapping("user/register")
     public ResponseEntity<?> registerUser(@RequestBody RegistrationUserDTO registrationDTO, final HttpServletRequest request) {
         try {
             ApplicationUser user = authentificationUserService.registerUser(
@@ -37,7 +42,7 @@ public class AuthenticationController {
                     registrationDTO.getEmail(),
                     registrationDTO.getPassword()
             );
-            publisher.publishEvent(new RegistrationCompleteEvent(
+            publisher.publishEvent(new UserRegistrationCompleteEvent(
                     user,
                     applicationUrl(request)
             ));
@@ -50,7 +55,7 @@ public class AuthenticationController {
         }
     }
 
-    @GetMapping("/verifyRegistration")
+    @GetMapping("/user/verifyRegistration")
     public String verifyRegistration(@RequestParam("token") String token) {
         String result = authentificationUserService.validateVerificationToken(token);
         if(result.equalsIgnoreCase("valid")) {
@@ -60,24 +65,25 @@ public class AuthenticationController {
     }
 
 
-    @GetMapping("/resendVerifyToken")
+    @GetMapping("/user/resendVerifyToken")
     public String resendVerificationToken(@RequestParam("token") String oldToken,
                                           HttpServletRequest request) {
-        VerificationToken verificationToken
+        VerificationTokenUser verificationToken
                 = authentificationUserService.generateNewVerificationToken(oldToken);
         ApplicationUser user = verificationToken.getUser();
         resendVerificationTokenMail(user, applicationUrl(request), verificationToken);
         return "Verification Link Sent";
     }
-    @PostMapping("/login/user")
+
+    @PostMapping("/user/login")
     public LoginResponseUserDTO loginUser(@RequestBody RegistrationUserDTO body){
         return authentificationUserService.loginUser(
                 body.getEmail(),
                 body.getPassword());
     }
 
-    @PostMapping("/register/transporteur")
-    public ResponseEntity<?> registerTransporteur(@RequestBody RegistrationTransporteurDTO body) {
+    @PostMapping("/transporteur/register")
+    public ResponseEntity<?> registerTransporteur(@RequestBody RegistrationTransporteurDTO body, final HttpServletRequest request) {
         try {
             Transporteur transporteur = authentificationTransporteurService.registerTransporteur(
                     body.getFirstName(),
@@ -86,6 +92,13 @@ public class AuthenticationController {
                     body.getEmail(),
                     body.getPassword()
             );
+
+            publisher.publishEvent(new TransporteurRegistrationCompleteEvent(
+                    transporteur,
+                    applicationUrl(request)
+            ));
+
+
             // Return a successful response with the created transporteur
             return ResponseEntity.ok(transporteur);
         } catch (RuntimeException e) {
@@ -96,20 +109,66 @@ public class AuthenticationController {
     }
 
 
-    @PostMapping("/login/transporteur")
+    @PostMapping("/transporteur/login")
     public LoginResponseTransporteurDTO loginTransporteur(@RequestBody RegistrationUserDTO body){
         return authentificationTransporteurService.loginTransporteur(
                 body.getEmail(),
                 body.getPassword());
     }
 
-    private void resendVerificationTokenMail(ApplicationUser user, String applicationUrl, VerificationToken verificationToken) {
+    @GetMapping("/transporteur/verifyRegistration")
+    public String verifyRegistrationTransporteur(@RequestParam("token") String token) {
+        String result = authentificationTransporteurService.validateVerificationToken(token);
+        if(result.equalsIgnoreCase("valid")) {
+
+            return "Transporteur Verified Successfully";
+        }
+        return "Bad transporteur";
+    }
+
+
+    @GetMapping("/transporteur/resendVerifyToken")
+    public String resendVerificationTokenTransporteur(@RequestParam("token") String oldToken,
+                                                      HttpServletRequest request) {
+        VerificationTokenTransporteur verificationToken
+                = authentificationTransporteurService.generateNewVerificationToken(oldToken);
+        Transporteur transporteur = verificationToken.getTransporteur();
+        resendVerificationTokenMailTransporteur(transporteur, applicationUrl(request), verificationToken);
+        return "Verification Link Sent";
+    }
+    private void resendVerificationTokenMail(ApplicationUser user, String applicationUrl, VerificationTokenUser verificationToken) {
         String url =
                 applicationUrl
-                        + "/verifyRegistration?token="
+                        + "/user/verifyRegistration?token="
+                        + verificationToken.getToken();
+
+        try {
+            emailUtil.sendOtpEmail(user.getEmail(), verificationToken.getToken(),url);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Unable to send otp please try again");
+        }
+
+
+        log.info("Click the link to verify your account: {}",
+                url);
+    }
+
+
+    private void resendVerificationTokenMailTransporteur(Transporteur user, String applicationUrl, VerificationTokenTransporteur verificationToken) {
+        String url =
+                applicationUrl
+                        + "/transporteur/verifyRegistration?token="
                         + verificationToken.getToken();
 
         //sendVerificationEmail()
+
+        try {
+            emailUtil.sendOtpEmail(user.getEmail(), verificationToken.getToken(),url);
+        } catch (MessagingException e) {
+            throw new RuntimeException("Unable to send otp please try again");
+        }
+
+
         log.info("Click the link to verify your account: {}",
                 url);
     }

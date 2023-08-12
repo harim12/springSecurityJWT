@@ -32,7 +32,7 @@ public class Transporteur implements UserDetails {
 
     private String password;
 
-
+    private boolean isManuallyEnabled=false;
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="transporteur_role_junction",
@@ -103,6 +103,6 @@ public class Transporteur implements UserDetails {
     @Override
     public boolean isEnabled() {
         // TODO Auto-generated method stub
-        return true;
+        return isManuallyEnabled;
     }
 }
