@@ -78,6 +78,7 @@ public class SecurityConfiguration {
         daoProvider.setUserDetailsService(userDetailsService);
         daoProvider.setPasswordEncoder(passwordEncoder());
         return daoProvider;
+
     }
 
     @Bean(name = "transporteurAuthenticationProvider")

@@ -3,9 +3,11 @@ package com.RimHASSANI.demo.springsecurityjwt.service;
 import com.RimHASSANI.demo.springsecurityjwt.model.ApplicationUser;
 import com.RimHASSANI.demo.springsecurityjwt.model.LoginResponseUserDTO;
 import com.RimHASSANI.demo.springsecurityjwt.model.Role;
+import com.RimHASSANI.demo.springsecurityjwt.model.VerificationToken;
 import com.RimHASSANI.demo.springsecurityjwt.repository.RoleRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.TransporteurRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
+import com.RimHASSANI.demo.springsecurityjwt.repository.VerificationTokenRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,8 +19,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
+
 @Service
 @Transactional
 public class AuthentificationUserService {
@@ -40,6 +45,11 @@ public class AuthentificationUserService {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
+
+
     @Qualifier("userAuthenticationManager")
     private final AuthenticationManager userAuthenticationManager;
     @Autowired
@@ -80,5 +90,45 @@ public class AuthentificationUserService {
             return new LoginResponseUserDTO(null, "");
         }
     }
+
+    public void saveVerificationTokenForUser(String token, ApplicationUser user) {
+        VerificationToken verificationToken
+                = new VerificationToken(user, token);
+
+        verificationTokenRepository.save(verificationToken);
+    }
+
+
+    public String validateVerificationToken(String token) {
+        VerificationToken verificationToken
+                = verificationTokenRepository.findByToken(token);
+
+        if (verificationToken == null) {
+            return "invalid";
+        }
+
+        ApplicationUser user = verificationToken.getUser();
+        Calendar cal = Calendar.getInstance();
+
+        if ((verificationToken.getExpirationTime().getTime()
+                - cal.getTime().getTime()) <= 0) {
+            verificationTokenRepository.delete(verificationToken);
+            return "expired";
+        }
+        user.setManuallyEnabled(true);
+        userRepository.save(user);  // Save the updated user
+        return "valid";
+    }
+
+
+
+    public VerificationToken generateNewVerificationToken(String oldToken) {
+        VerificationToken verificationToken
+                = verificationTokenRepository.findByToken(oldToken);
+        verificationToken.setToken(UUID.randomUUID().toString());
+        verificationTokenRepository.save(verificationToken);
+        return verificationToken;
+    }
+
 
 }

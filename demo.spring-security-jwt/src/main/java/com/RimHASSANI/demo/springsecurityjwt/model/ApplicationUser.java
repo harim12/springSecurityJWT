@@ -28,6 +28,7 @@ public class ApplicationUser implements UserDetails {
 
     private String password;
 
+    private boolean isManuallyEnabled=false;
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="user_role_junction",
@@ -97,6 +98,9 @@ public class ApplicationUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         // TODO Auto-generated method stub
-        return true;
+        return isManuallyEnabled;
     }
+
+
+
 }
