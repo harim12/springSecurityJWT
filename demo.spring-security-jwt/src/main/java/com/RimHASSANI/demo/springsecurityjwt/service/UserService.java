@@ -1,5 +1,6 @@
 package com.RimHASSANI.demo.springsecurityjwt.service;
 
+import com.RimHASSANI.demo.springsecurityjwt.model.DemandeEntity;
 import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +28,6 @@ public class UserService implements UserDetailsService {
 
         return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("user is not valid"));
     }
-
 
 
 

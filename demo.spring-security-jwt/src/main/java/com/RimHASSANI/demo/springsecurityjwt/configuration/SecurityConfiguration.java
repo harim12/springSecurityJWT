@@ -108,9 +108,13 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
-                    auth.requestMatchers("/admin/**").hasRole("ADMIN");
-                    auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers("/transporteur/**").permitAll();
+                    auth.requestMatchers("/user/**").permitAll();
+                    auth.requestMatchers("/demande/**").permitAll();
+
+                    //auth.requestMatchers("/admin/**").hasRole("ADMIN");
+                    //auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
+                    //auth.anyRequest().authenticated();
                 });
 
         http.oauth2ResourceServer()
