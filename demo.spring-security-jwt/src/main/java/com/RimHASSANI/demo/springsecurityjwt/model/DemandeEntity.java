@@ -1,21 +1,22 @@
 package com.RimHASSANI.demo.springsecurityjwt.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class DemandeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer demandeId;
 
     private String demandeName;
+
+    @OneToOne(mappedBy = "demandeEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "demande_id")
+    private DemandeSpecific specificDemande;
 }
