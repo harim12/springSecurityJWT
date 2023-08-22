@@ -18,4 +18,12 @@ public class MotoDemande extends DemandeSpecific{
     @JsonProperty("motoType")
     @Column(name = "moto_type")
     private String motoType;
+
+    @JsonProperty("motoPrice")
+    @Column(name = "moto_price")
+    private String motoPrice;
+
+    @JsonProperty("motoEtat")
+    @Column(name = "moto_etat")
+    private String motoEtat;
 }
