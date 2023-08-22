@@ -17,12 +17,34 @@ import lombok.Setter;
 
 
 public class MeubleDemande extends DemandeSpecific {
-    // Attributs spécifiques aux meubles...
 
-    // Getters and setters
-    @JsonProperty("meubleType")
-    @Column(name = "meuble_type")
-    private String meubleType;
+    @JsonProperty("items")
+    @Column(name = "items")
+    private String items;
+
+    @JsonProperty("enlevementType")
+    @Column(name = "enlevementType")
+    private String enlevementType;
+    @JsonProperty("enlevementEtage")
+    @Column(name = "enlevementEtage")
+    private String enlevementEtage;
+    @JsonProperty("enlevementAvecSansAssenceur")
+    @Column(name = "enlevementAvecSansAssenceur")
+    private String enlevementAvecSansAssenceur;
+
+    @JsonProperty("livraisonType")
+    @Column(name = "livraisonType")
+    private String livraisonType;
+
+    @JsonProperty("livraisonEtage")
+    @Column(name = "livraisonEtage")
+    private String livraisonEtage;
+
+    @JsonProperty("livraisonAvecSansAssenceur")
+    @Column(name = "livraisonAvecSansAssenceur")
+    private String livraisonAvecSansAssenceur;
+
+
 
 
 }
