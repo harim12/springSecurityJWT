@@ -2,15 +2,19 @@ package com.RimHASSANI.demo.springsecurityjwt.controller;
 
 import com.RimHASSANI.demo.springsecurityjwt.model.*;
 import com.RimHASSANI.demo.springsecurityjwt.service.DemandeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static java.rmi.server.LogStream.log;
+
 @RestController
 @RequestMapping("/demande")
 @CrossOrigin(origins = "http://localhost:4200")
+@Slf4j
 public class DemandeController {
     @Autowired
     private DemandeService demandeService;
@@ -36,8 +40,13 @@ public class DemandeController {
                 VoitureDemande voitureDemande = (VoitureDemande) specificDemande;
                 voitureDemande.setDemandeEntity(demandeEntity);
             } else if(specificDemande instanceof MotoDemande){
+                System.out.println("mchali l moto 3awd=====>");
                 MotoDemande motoDemande = (MotoDemande) specificDemande;
                 motoDemande.setDemandeEntity(demandeEntity);
+            }
+            else if(specificDemande instanceof ColisList){
+                ColisList colisList = (ColisList) specificDemande;
+                colisList.setDemandeEntity(demandeEntity);
             }
         }
         return demandeService.addDemande(demandeEntity);

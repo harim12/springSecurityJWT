@@ -17,7 +17,9 @@ import lombok.Setter;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = MeubleDemande.class, name = "house"),
         @JsonSubTypes.Type(value = VoitureDemande.class, name = "car"),
-        @JsonSubTypes.Type(value = MotoDemande.class, name = "moto")
+        @JsonSubTypes.Type(value = MotoDemande.class, name = "moto"),
+        @JsonSubTypes.Type(value = ColisList.class, name = "colis")
+
 })
 
 
@@ -26,7 +28,8 @@ import lombok.Setter;
 public abstract class DemandeSpecific {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name="demande_specific_id")
+    private Long demande_specific_id;
 
     @OneToOne
     @JsonIgnore
