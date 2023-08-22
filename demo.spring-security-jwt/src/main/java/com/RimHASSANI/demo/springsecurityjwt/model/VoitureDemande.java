@@ -29,5 +29,14 @@ public class VoitureDemande extends DemandeSpecific{
     @Column(name = "voiture_type")
     private String voitureType;
 
+    @JsonProperty("voitureEtat")
+    @Column(name = "voiture_etat")
+    private String voitureEtat;
+
+
+    @JsonProperty("voiturePrice")
+    @Column(name = "voiture_price")
+    private String voiturePrice;
+
 
 }

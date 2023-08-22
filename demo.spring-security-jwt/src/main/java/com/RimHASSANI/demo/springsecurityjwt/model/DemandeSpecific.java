@@ -28,7 +28,6 @@ public abstract class DemandeSpecific {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String demandeSpecificeName;
     @OneToOne
     @JsonIgnore
     @JoinColumn(name = "demande_id")

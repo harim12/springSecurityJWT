@@ -14,7 +14,12 @@ public class DemandeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer demandeId;
 
-    private String demandeName;
+    private String villeDepart;
+    private String villeArrivee;
+    private String adresseDepart;
+    private String adresseArrivee;
+
+    private String horaire;
 
     @OneToOne(mappedBy = "demandeEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "demande_id")

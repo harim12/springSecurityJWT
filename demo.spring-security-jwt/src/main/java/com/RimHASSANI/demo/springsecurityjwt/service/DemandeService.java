@@ -19,7 +19,7 @@ public class DemandeService {
 
     @Autowired WebSocketService webSocketService;
     public DemandeEntity addDemande(DemandeEntity demandeEntity) {
-        notifyFrontend();
+
         DemandeSpecific specificDemande = demandeEntity.getSpecificDemande();
        if (specificDemande != null) {
             // Create an instance of the specific demande (e.g., CarDemande or MeubleDemande)
@@ -35,8 +35,10 @@ public class DemandeService {
 
             specificDemande.setDemandeEntity(demandeEntity);
         }
+        DemandeEntity demande  = demandeRepository.save(demandeEntity);
+        notifyFrontend();
 
-        return demandeRepository.save(demandeEntity);
+        return demande ;
     }
 
     public List<DemandeEntity> getDemandes() {
