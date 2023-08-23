@@ -32,6 +32,10 @@ public class Transporteur implements UserDetails {
 
     private String password;
 
+    private String carType;
+
+    private String paymentCardNum;
+
     private boolean isManuallyEnabled=false;
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(

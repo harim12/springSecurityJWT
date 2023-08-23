@@ -1,7 +1,10 @@
 package com.RimHASSANI.demo.springsecurityjwt.service;
 
+import com.RimHASSANI.demo.springsecurityjwt.model.Transporteur;
+import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurInfo;
 import com.RimHASSANI.demo.springsecurityjwt.repository.TransporteurRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
+import jakarta.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,4 +29,17 @@ public class TransporteurService  implements UserDetailsService {
 
         return transporteurRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("transporteur is not valid"));
     }
+
+    public TransporteurInfo getTransporteurInfoByEmail(String email) {
+        Tuple tuple = transporteurRepository.getTransporteurInfoByEmail(email);
+
+        if (tuple != null) {
+            String firstName = tuple.get("first_name", String.class);
+            String lastName = tuple.get("last_name", String.class);
+            String carType = tuple.get("car_type", String.class);
+
+            return new TransporteurInfo(firstName, lastName, carType);
+        }
+
+        return null;    }
 }
