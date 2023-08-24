@@ -8,13 +8,11 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class RegistrationUserDTO {
-    private String username;
-
+public class UserInfo {
     private String firstName;
+
     private String lastName;
+
     private Integer phoneNumber;
-    private String password;
-    private String email;
 
 }

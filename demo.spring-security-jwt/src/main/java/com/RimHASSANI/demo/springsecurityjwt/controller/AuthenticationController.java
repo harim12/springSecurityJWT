@@ -39,6 +39,7 @@ public class AuthenticationController {
             ApplicationUser user = authentificationUserService.registerUser(
                     registrationDTO.getFirstName(),
                     registrationDTO.getLastName(),
+                    registrationDTO.getPhoneNumber(),
                     registrationDTO.getEmail(),
                     registrationDTO.getPassword()
             );

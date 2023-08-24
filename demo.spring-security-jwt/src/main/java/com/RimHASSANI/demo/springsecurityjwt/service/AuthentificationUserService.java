@@ -59,7 +59,7 @@ public class AuthentificationUserService {
 
     }
 
-    public ApplicationUser registerUser(String firstName, String lastName, String email, String password){
+    public ApplicationUser registerUser(String firstName, String lastName,Integer phoneNumber, String email, String password){
 
         try {
             String encodedPassword = passwordEncoder.encode(password);
@@ -68,7 +68,7 @@ public class AuthentificationUserService {
             Set<Role> authorities = new HashSet<>();
             authorities.add(userRole);
 
-            return userRepository.save(new ApplicationUser(0, firstName, lastName, email, encodedPassword, authorities));
+            return userRepository.save(new ApplicationUser(0, firstName, lastName,phoneNumber, email, encodedPassword, authorities));
         } catch (DataIntegrityViolationException e) {
             // Handle the case when the email already exists
             throw new RuntimeException("Email already exists");

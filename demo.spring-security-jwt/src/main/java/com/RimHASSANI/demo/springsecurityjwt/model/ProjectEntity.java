@@ -18,6 +18,7 @@ public class ProjectEntity {
     private String userFirstName;
     private String userLastName;
     private String userPhoneNumber;
+    private Double price;
 
     private String transporteurEmail;
 

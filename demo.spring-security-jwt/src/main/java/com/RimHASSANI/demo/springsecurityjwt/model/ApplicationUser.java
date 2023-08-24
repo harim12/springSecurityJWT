@@ -29,6 +29,8 @@ public class ApplicationUser implements UserDetails {
     private String password;
 
     private boolean isManuallyEnabled=false;
+
+    private Integer phoneNumber;
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
             name="user_role_junction",
@@ -43,11 +45,12 @@ public class ApplicationUser implements UserDetails {
     }
 
 
-    public ApplicationUser(Integer userId,String firstName,String lastName,String email, String password, Set<Role> authorities) {
+    public ApplicationUser(Integer userId,String firstName,String lastName, Integer phoneNumber,String email, String password, Set<Role> authorities) {
         super();
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
