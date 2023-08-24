@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static java.rmi.server.LogStream.log;
-
 @RestController
 @RequestMapping("/demande")
 @CrossOrigin(origins = "http://localhost:4200")
@@ -68,5 +66,7 @@ public class DemandeController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
 }

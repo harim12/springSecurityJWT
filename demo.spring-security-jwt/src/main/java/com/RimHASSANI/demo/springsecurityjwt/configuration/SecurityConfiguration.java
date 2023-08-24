@@ -112,6 +112,9 @@ public class SecurityConfiguration {
                     auth.requestMatchers("/user/**").permitAll();
                     auth.requestMatchers("/demande/**").permitAll();
                     auth.requestMatchers("/sba-websocket/**").permitAll();
+                    auth.requestMatchers("/price-suggestion/**").permitAll();
+                    auth.requestMatchers("/project/**").permitAll();
+
 
                     //auth.requestMatchers("/admin/**").hasRole("ADMIN");
                     //auth.requestMatchers("/user/**").hasAnyRole("ADMIN", "USER");
