@@ -1,5 +1,6 @@
 package com.RimHASSANI.demo.springsecurityjwt.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,13 +18,23 @@ import java.util.List;
 @Getter
 @Setter
 public class ColisList extends DemandeSpecific{
+    @Column(name = "colis_type")
+    private String colisType;
+
+    @Column(name = "colis_largeur")
+    private String colisLargeur;
+
+    @Column(name = "colis_profendeur")
+    private String colisProfendeur;
+
+    @Column(name = "colis_hauteur")
+    private String colisHauteur;
+
+    @Column(name = "colis_unite")
+    private String colisUnite;
+
+    @Column(name = "colis_poids")
+    private String colisPoids;
 
 
-    @Column(name = "colis_list_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer colisListId;
-    private String colisName;
-
-    @OneToMany(mappedBy = "colisList", cascade = CascadeType.ALL)
-    private List<Colis> colisItems = new ArrayList<>();
 }

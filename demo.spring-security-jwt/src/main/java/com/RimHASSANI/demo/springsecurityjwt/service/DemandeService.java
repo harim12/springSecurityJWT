@@ -30,8 +30,13 @@ public class DemandeService {
                 // Set attributes specific to MeubleDemande
             } else if(specificDemande instanceof MotoDemande){
                 MotoDemande motoDemande = (MotoDemande) specificDemande;
-            } else if(specificDemande instanceof ColisList){
+            } else if (specificDemande instanceof ColisList) {
                 ColisList colisList = (ColisList) specificDemande;
+
+                // Set the relationship between ColisList and Colis items
+                /*for (Colis colis : colisList.getColisItems()) {
+                    colis.setColisList(colisList);
+                }*/
             }
 
             specificDemande.setDemandeEntity(demandeEntity);

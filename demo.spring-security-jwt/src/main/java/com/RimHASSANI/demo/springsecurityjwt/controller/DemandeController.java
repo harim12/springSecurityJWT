@@ -38,13 +38,13 @@ public class DemandeController {
                 VoitureDemande voitureDemande = (VoitureDemande) specificDemande;
                 voitureDemande.setDemandeEntity(demandeEntity);
             } else if(specificDemande instanceof MotoDemande){
-                System.out.println("mchali l moto 3awd=====>");
                 MotoDemande motoDemande = (MotoDemande) specificDemande;
                 motoDemande.setDemandeEntity(demandeEntity);
             }
             else if(specificDemande instanceof ColisList){
                 ColisList colisList = (ColisList) specificDemande;
                 colisList.setDemandeEntity(demandeEntity);
+
             }
         }
         return demandeService.addDemande(demandeEntity);

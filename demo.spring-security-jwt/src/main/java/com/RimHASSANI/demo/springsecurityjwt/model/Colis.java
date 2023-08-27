@@ -34,7 +34,6 @@ public class Colis {
     @Column(name = "colis_poids")
     private Double colisPoids;
 
-    @ManyToOne
-    @JoinColumn(name = "colis_list_id")
-    private ColisList colisList;  // This is the correct property name*/
+
+
 }
