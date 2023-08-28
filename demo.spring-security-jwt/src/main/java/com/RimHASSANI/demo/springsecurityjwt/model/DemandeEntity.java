@@ -21,6 +21,10 @@ public class DemandeEntity {
 
     private String horaire;
 
+    private String firstImageUrl;
+    private String secondImageUrl;
+    private String thirdImageUrl;
+
     @OneToOne(mappedBy = "demandeEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "demande_id")
     private DemandeSpecific specificDemande;
