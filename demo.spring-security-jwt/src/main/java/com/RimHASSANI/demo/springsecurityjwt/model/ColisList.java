@@ -25,7 +25,7 @@ public class ColisList extends DemandeSpecific{
     private String colisLargeur;
 
     @Column(name = "colis_profendeur")
-    private String colisProfendeur;
+    private String colisProfondeur;
 
     @Column(name = "colis_hauteur")
     private String colisHauteur;
