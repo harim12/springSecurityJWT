@@ -25,6 +25,7 @@ public class DemandeEntity {
     private String secondImageUrl;
     private String thirdImageUrl;
     private String informationSpecial;
+    private String trajet;
     @OneToOne(mappedBy = "demandeEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "demande_id")
     private DemandeSpecific specificDemande;
