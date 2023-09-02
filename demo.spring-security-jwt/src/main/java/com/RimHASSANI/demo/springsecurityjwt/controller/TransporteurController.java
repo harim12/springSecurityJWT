@@ -2,6 +2,7 @@ package com.RimHASSANI.demo.springsecurityjwt.controller;
 
 import com.RimHASSANI.demo.springsecurityjwt.model.Transporteur;
 import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurInfo;
+import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurPersonalInfo;
 import com.RimHASSANI.demo.springsecurityjwt.service.TransporteurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,16 @@ public class TransporteurController {
         TransporteurInfo transporteurInfo = transporteurService.getTransporteurInfoByEmail(email);
         if (transporteurInfo != null) {
             return ResponseEntity.ok(transporteurInfo);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/get/{email}/personal-info")
+    public ResponseEntity<TransporteurPersonalInfo> getTransporteurPersonalInfo(@PathVariable String email) {
+        TransporteurPersonalInfo transporteurPersonalInfo = transporteurService.getTransporteurPersonalInfoByEmail(email);
+        if (transporteurPersonalInfo != null) {
+            return ResponseEntity.ok(transporteurPersonalInfo);
         } else {
             return ResponseEntity.notFound().build();
         }

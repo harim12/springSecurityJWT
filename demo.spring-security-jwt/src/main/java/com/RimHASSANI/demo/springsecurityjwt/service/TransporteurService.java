@@ -2,6 +2,7 @@ package com.RimHASSANI.demo.springsecurityjwt.service;
 
 import com.RimHASSANI.demo.springsecurityjwt.model.Transporteur;
 import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurInfo;
+import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurPersonalInfo;
 import com.RimHASSANI.demo.springsecurityjwt.repository.TransporteurRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
 import jakarta.persistence.Tuple;
@@ -39,6 +40,21 @@ public class TransporteurService  implements UserDetailsService {
             String carType = tuple.get("car_type", String.class);
 
             return new TransporteurInfo(firstName, lastName, carType);
+        }
+
+        return null;
+    }
+
+    public TransporteurPersonalInfo getTransporteurPersonalInfoByEmail(String email) {
+        Tuple tuple = transporteurRepository.getTransporteurPersonalInfoByEmail(email);
+
+        if (tuple != null) {
+            String firstName = tuple.get("first_name", String.class);
+            String lastName = tuple.get("last_name", String.class);
+            String  imageUrl  = tuple.get("image_url",String.class);
+            String city = tuple.get("city",String.class);
+
+            return new TransporteurPersonalInfo(firstName, lastName,imageUrl,city,email);
         }
 
         return null;

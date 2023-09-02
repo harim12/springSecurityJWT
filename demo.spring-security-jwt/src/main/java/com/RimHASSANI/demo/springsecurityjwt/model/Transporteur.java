@@ -34,6 +34,12 @@ public class Transporteur implements UserDetails {
 
     private String carType;
 
+    private String imageUrl;
+    private String city;
+    private String nameOnCard;
+    private String cardExpiry;
+
+    private String ccvCard;
     private String paymentCardNum;
 
     private boolean isManuallyEnabled=false;
@@ -51,7 +57,24 @@ public class Transporteur implements UserDetails {
     }
 
 
-    public Transporteur(Integer transporteurId,String firstName,String lastName,Integer phoneNumber,String email, String password, Set<Role> authorities) {
+    public Transporteur(Integer transporteurId,String firstName,String lastName,Integer phoneNumber,String email, String password, Set<Role> authorities,String city,String imageUrl,String nameOnCard,String paymentCardNum,String cardExpiry,String ccvCard) {
+        super();
+        this.transporteurId = transporteurId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+        this.authorities = authorities;
+        this.city = city;
+        this.paymentCardNum = paymentCardNum;
+        this.imageUrl = imageUrl;
+        this.nameOnCard = nameOnCard;
+        this.cardExpiry = cardExpiry;
+        this.ccvCard = ccvCard;
+    }
+
+    public Transporteur(Integer transporteurId, String firstName, String lastName, Integer phoneNumber, String email, String encodedPassword, Set<Role> authorities) {
         super();
         this.transporteurId = transporteurId;
         this.firstName = firstName;
