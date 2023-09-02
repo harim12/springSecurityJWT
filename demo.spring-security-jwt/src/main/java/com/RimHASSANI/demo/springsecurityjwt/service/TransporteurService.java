@@ -78,6 +78,7 @@ public class TransporteurService  implements UserDetailsService {
 
             // Save the updated transporteur information back to the database
             transporteurRepository.save(existingTransporteur);
+            notifyFrontend();
 
             TransporteurPersonalInfo updatedPersonalInfo = new TransporteurPersonalInfo();
             updatedPersonalInfo.setFirstName(existingTransporteur.getFirstName());
@@ -86,7 +87,6 @@ public class TransporteurService  implements UserDetailsService {
             updatedPersonalInfo.setEmail(existingTransporteur.getEmail());
             updatedPersonalInfo.setImageUrl(existingTransporteur.getImageUrl());
 
-            notifyFrontend();
             return updatedPersonalInfo;
         } else {
             // Handle the case where the transporteur with the provided email does not exist
@@ -147,6 +147,7 @@ public class TransporteurService  implements UserDetailsService {
             updatedPersonalInfo.setNameOnCard(existingTransporteur.getNameOnCard());
             updatedPersonalInfo.setStreetAddress(existingTransporteur.getStreetAddress());
             updatedPersonalInfo.setCity(existingTransporteur.getCity());
+            notifyFrontend();
 
             return ResponseEntity.ok(updatedPersonalInfo);
         } else {
