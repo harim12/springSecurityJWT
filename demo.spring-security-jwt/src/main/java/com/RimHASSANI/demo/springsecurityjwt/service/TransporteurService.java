@@ -24,6 +24,10 @@ public class TransporteurService  implements UserDetailsService {
     @Autowired
     private TransporteurRepository transporteurRepository;
 
+    @Autowired
+    WebSocketService webSocketService;
+
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -59,4 +63,47 @@ public class TransporteurService  implements UserDetailsService {
 
         return null;
     }
+
+    public TransporteurPersonalInfo updateTransporteurInfo(TransporteurPersonalInfo transporteurPersonalInfo,String imagePath) {
+        Transporteur existingTransporteur = transporteurRepository.findByEmail(transporteurPersonalInfo.getEmail()).get();
+        if (existingTransporteur != null) {
+            // Update the fields that you want to allow changing
+            existingTransporteur.setFirstName(transporteurPersonalInfo.getFirstName());
+            existingTransporteur.setLastName(transporteurPersonalInfo.getLastName());
+            existingTransporteur.setCity(transporteurPersonalInfo.getCity());
+            existingTransporteur.setImageUrl(imagePath);
+            // You can similarly update other fields as needed
+
+            // Save the updated transporteur information back to the database
+            transporteurRepository.save(existingTransporteur);
+
+            TransporteurPersonalInfo updatedPersonalInfo = new TransporteurPersonalInfo();
+            updatedPersonalInfo.setFirstName(existingTransporteur.getFirstName());
+            updatedPersonalInfo.setLastName(existingTransporteur.getLastName());
+            updatedPersonalInfo.setCity(existingTransporteur.getCity());
+            updatedPersonalInfo.setEmail(existingTransporteur.getEmail());
+            updatedPersonalInfo.setImageUrl(existingTransporteur.getImageUrl());
+
+            notifyFrontend();
+            return updatedPersonalInfo;
+        } else {
+            // Handle the case where the transporteur with the provided email does not exist
+            return null;
+        }
+
+    }
+
+    protected String getEntityTopic(){
+        return "update-transporteur";
+    }
+    public void notifyFrontend(){
+        final String entityTopic = getEntityTopic();
+        if(entityTopic==null){
+
+            return;
+        }
+        webSocketService.sendMessage(entityTopic);
+
+    }
+
 }
