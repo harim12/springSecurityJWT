@@ -35,6 +35,7 @@ public class Transporteur implements UserDetails {
     private String carType;
 
     private String imageUrl;
+    private String streetAddress;
     private String city;
     private String nameOnCard;
     private String cardExpiry;
@@ -57,7 +58,7 @@ public class Transporteur implements UserDetails {
     }
 
 
-    public Transporteur(Integer transporteurId,String firstName,String lastName,Integer phoneNumber,String email, String password, Set<Role> authorities,String city,String imageUrl,String nameOnCard,String paymentCardNum,String cardExpiry,String ccvCard) {
+    public Transporteur(Integer transporteurId,String firstName,String lastName,Integer phoneNumber,String email, String password, Set<Role> authorities,String streetAddress,String city,String imageUrl,String nameOnCard,String paymentCardNum,String cardExpiry,String ccvCard) {
         super();
         this.transporteurId = transporteurId;
         this.firstName = firstName;
@@ -66,6 +67,7 @@ public class Transporteur implements UserDetails {
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.streetAddress = streetAddress;
         this.city = city;
         this.paymentCardNum = paymentCardNum;
         this.imageUrl = imageUrl;
