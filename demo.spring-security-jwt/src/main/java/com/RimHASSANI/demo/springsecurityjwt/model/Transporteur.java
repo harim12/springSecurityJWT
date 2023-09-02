@@ -83,7 +83,7 @@ public class Transporteur implements UserDetails {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.password = password;
+        this.password = encodedPassword;
         this.authorities = authorities;
     }
 

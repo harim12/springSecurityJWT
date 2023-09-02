@@ -75,4 +75,10 @@ public class TransporteurController {
         return transporteurService.updateTransporteurPaimentInfo(transporteurPaimentInfo);
     }
 
+    @PutMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody PasswordEntity passwordEntity){
+        System.out.println("inside the update function");
+        return transporteurService.changePassword(passwordEntity);
+    }
+
 }

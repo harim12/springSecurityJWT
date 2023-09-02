@@ -1,9 +1,6 @@
 package com.RimHASSANI.demo.springsecurityjwt.service;
 
-import com.RimHASSANI.demo.springsecurityjwt.model.Transporteur;
-import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurInfo;
-import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurPaimentInfo;
-import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurPersonalInfo;
+import com.RimHASSANI.demo.springsecurityjwt.model.*;
 import com.RimHASSANI.demo.springsecurityjwt.repository.TransporteurRepository;
 import com.RimHASSANI.demo.springsecurityjwt.repository.UserRepository;
 import jakarta.persistence.Tuple;
@@ -28,6 +25,9 @@ public class TransporteurService  implements UserDetailsService {
 
     @Autowired
     WebSocketService webSocketService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -152,6 +152,30 @@ public class TransporteurService  implements UserDetailsService {
             return ResponseEntity.ok(updatedPersonalInfo);
         } else {
             // Handle the case where the transporteur with the provided email does not exist
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    public ResponseEntity<String> changePassword(PasswordEntity passwordEntity) {
+        Transporteur transporteur = transporteurRepository.findByEmail(passwordEntity.getEmail()).orElse(null);
+        System.out.println("this is the fetched transporteur"+transporteur);
+        if (transporteur != null) {
+            System.out.println("this is the old password =>" +passwordEncoder.encode(passwordEntity.getOldPassword()));
+            System.out.println("this is the password from the database=>"+transporteur.getPassword());
+            // Check if the old password matches the current password
+            if (passwordEncoder.matches(passwordEntity.getOldPassword(), transporteur.getPassword())) {
+                // Encode and set the new password
+                String newPasswordEncoded = passwordEncoder.encode(passwordEntity.getNewPassword());
+                transporteur.setPassword(newPasswordEncoded);
+
+                System.out.println("transporteur===============>"+transporteurRepository.save(transporteur));
+                transporteurRepository.save(transporteur);
+
+                return ResponseEntity.ok("Password changed successfully.");
+            } else {
+                return ResponseEntity.badRequest().body("Old password is incorrect.");
+            }
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
