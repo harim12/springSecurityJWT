@@ -1,9 +1,6 @@
 package com.RimHASSANI.demo.springsecurityjwt.controller;
 
-import com.RimHASSANI.demo.springsecurityjwt.model.DemandeEntity;
-import com.RimHASSANI.demo.springsecurityjwt.model.Transporteur;
-import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurInfo;
-import com.RimHASSANI.demo.springsecurityjwt.model.TransporteurPersonalInfo;
+import com.RimHASSANI.demo.springsecurityjwt.model.*;
 import com.RimHASSANI.demo.springsecurityjwt.service.TransporteurService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +41,7 @@ public class TransporteurController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PutMapping("/update")
+    @PutMapping("/update-personal-info")
     public TransporteurPersonalInfo addTeste(@RequestParam("testeEntity") String testDataJson,
                                   @RequestParam(value = "image", required = false) MultipartFile image){
         ObjectMapper objectMapper = new ObjectMapper();
@@ -61,6 +58,21 @@ public class TransporteurController {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @GetMapping("/get/{email}/paiment-info")
+    public ResponseEntity<TransporteurPaimentInfo> getTransporteurPaimentInfo(@PathVariable String email) {
+        TransporteurPaimentInfo transporteurPersonalInfo = transporteurService.getTransporteurPaimentInfo(email);
+        if (transporteurPersonalInfo != null) {
+            return ResponseEntity.ok(transporteurPersonalInfo);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/update/paiment-info")
+    public ResponseEntity<TransporteurPaimentInfo> updateTransporteurPaimentInfo(@RequestBody TransporteurPaimentInfo transporteurPaimentInfo){
+        return transporteurService.updateTransporteurPaimentInfo(transporteurPaimentInfo);
     }
 
 }
