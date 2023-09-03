@@ -158,19 +158,15 @@ public class TransporteurService  implements UserDetailsService {
 
     public ResponseEntity<String> changePassword(PasswordEntity passwordEntity) {
         Transporteur transporteur = transporteurRepository.findByEmail(passwordEntity.getEmail()).orElse(null);
-        System.out.println("this is the fetched transporteur"+transporteur);
         if (transporteur != null) {
-            System.out.println("this is the old password =>" +passwordEncoder.encode(passwordEntity.getOldPassword()));
-            System.out.println("this is the password from the database=>"+transporteur.getPassword());
             // Check if the old password matches the current password
             if (passwordEncoder.matches(passwordEntity.getOldPassword(), transporteur.getPassword())) {
                 // Encode and set the new password
                 String newPasswordEncoded = passwordEncoder.encode(passwordEntity.getNewPassword());
                 transporteur.setPassword(newPasswordEncoded);
 
-                System.out.println("transporteur===============>"+transporteurRepository.save(transporteur));
                 transporteurRepository.save(transporteur);
-
+                System.out.println(transporteurRepository.save(transporteur));
                 return ResponseEntity.ok("Password changed successfully.");
             } else {
                 return ResponseEntity.badRequest().body("Old password is incorrect.");
@@ -180,3 +176,4 @@ public class TransporteurService  implements UserDetailsService {
         }
     }
 }
+

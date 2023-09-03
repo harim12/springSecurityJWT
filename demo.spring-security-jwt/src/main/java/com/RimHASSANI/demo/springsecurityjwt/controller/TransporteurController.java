@@ -78,6 +78,7 @@ public class TransporteurController {
     @PutMapping("/update-password")
     public ResponseEntity<String> updatePassword(@RequestBody PasswordEntity passwordEntity){
         System.out.println("inside the update function");
+
         return transporteurService.changePassword(passwordEntity);
     }
 
