@@ -175,5 +175,20 @@ public class TransporteurService  implements UserDetailsService {
             return ResponseEntity.notFound().build();
         }
     }
+
+    public TransporteurVehiculeInfo getTransporteurVehiculeInfo(String email) {
+        Tuple tuple = transporteurRepository.getTransporteurVehiculeInfoByEmail(email);
+
+        if (tuple != null) {
+            String imageVehiculeUrl = tuple.get("image_vehicule_url", String.class);
+            String driverLiscence = tuple.get("driver_liscence", String.class);
+            String  nationalIdentity  = tuple.get("national_identity",String.class);
+            String vehiculeRegistrationNumber = tuple.get("vehicule_registration_number",String.class);
+
+            return new TransporteurVehiculeInfo(imageVehiculeUrl, driverLiscence,nationalIdentity,vehiculeRegistrationNumber,email);
+        }
+
+        return null;
+    }
 }
 

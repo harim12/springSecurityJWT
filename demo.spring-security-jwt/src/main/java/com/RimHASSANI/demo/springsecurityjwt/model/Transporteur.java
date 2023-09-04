@@ -43,6 +43,12 @@ public class Transporteur implements UserDetails {
     private String ccvCard;
     private String paymentCardNum;
 
+    private String imageVehiculeUrl;
+
+    private String driverLiscence;
+    private String nationalIdentity;
+    private String vehiculeRegistrationNumber;
+
     private boolean isManuallyEnabled=false;
     @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(
@@ -58,7 +64,9 @@ public class Transporteur implements UserDetails {
     }
 
 
-    public Transporteur(Integer transporteurId,String firstName,String lastName,Integer phoneNumber,String email, String password, Set<Role> authorities,String streetAddress,String city,String imageUrl,String nameOnCard,String paymentCardNum,String cardExpiry,String ccvCard) {
+    public Transporteur(Integer transporteurId,String firstName,String lastName,Integer phoneNumber,String email, String password, Set<Role> authorities,
+                        String streetAddress,String city,String imageUrl,String nameOnCard,String paymentCardNum,String cardExpiry,String ccvCard,
+                        String imageVehiculeUrl,String driverLiscence,String nationalIdentity,String vehiculeRegistrationNumber) {
         super();
         this.transporteurId = transporteurId;
         this.firstName = firstName;
@@ -74,6 +82,10 @@ public class Transporteur implements UserDetails {
         this.nameOnCard = nameOnCard;
         this.cardExpiry = cardExpiry;
         this.ccvCard = ccvCard;
+        this.imageVehiculeUrl = imageVehiculeUrl;
+        this.driverLiscence = driverLiscence;
+        this.nationalIdentity = nationalIdentity;
+        this.vehiculeRegistrationNumber = vehiculeRegistrationNumber;
     }
 
     public Transporteur(Integer transporteurId, String firstName, String lastName, Integer phoneNumber, String email, String encodedPassword, Set<Role> authorities) {

@@ -21,4 +21,6 @@ public interface TransporteurRepository extends JpaRepository<Transporteur,Integ
 
     @Query(value = "SELECT t.card_expiry, t.ccv_card, t.payment_card_num , t.name_on_card , t.street_address,t.city  FROM transporteurs t WHERE t.email = :email", nativeQuery = true)
     Tuple getTransporteurPaimentInfoByEmail(String email);
+    @Query(value = "SELECT t.image_vehicule_url, t.driver_liscence, t.national_identity , t.vehicule_registration_number  FROM transporteurs t WHERE t.email = :email", nativeQuery = true)
+    Tuple getTransporteurVehiculeInfoByEmail(String email);
 }

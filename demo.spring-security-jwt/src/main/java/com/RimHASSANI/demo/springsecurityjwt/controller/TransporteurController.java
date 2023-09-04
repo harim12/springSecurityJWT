@@ -82,4 +82,14 @@ public class TransporteurController {
         return transporteurService.changePassword(passwordEntity);
     }
 
+    @GetMapping("/get/{email}/vehicule-info")
+    public ResponseEntity<TransporteurVehiculeInfo> getTransporteurVehiculeInfo(@PathVariable String email) {
+        TransporteurVehiculeInfo transporteurVehiculeInfo = transporteurService.getTransporteurVehiculeInfo(email);
+        if (transporteurVehiculeInfo != null) {
+            return ResponseEntity.ok(transporteurVehiculeInfo);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

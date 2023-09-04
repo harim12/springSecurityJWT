@@ -11,9 +11,10 @@ import lombok.*;
 public class TransporteurVehiculeInfo {
 
     private String imageVehiculeUrl;
-
     private String driverLiscence;
     private String nationalIdentity;
     private String vehiculeRegistrationNumber;
+
+    private String email;
 
 }
