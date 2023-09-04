@@ -37,7 +37,7 @@ public class PriceSuggestionService {
 
             return;
         }
-        webSocketService.sendMessage(entityTopic);
+        webSocketService.sendMessage(entityTopic,"price");
 
     }
 }

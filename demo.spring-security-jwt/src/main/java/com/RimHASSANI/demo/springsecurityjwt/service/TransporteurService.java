@@ -85,7 +85,7 @@ public class TransporteurService  implements UserDetailsService {
             updatedPersonalInfo.setCity(existingTransporteur.getCity());
             updatedPersonalInfo.setEmail(existingTransporteur.getEmail());
             updatedPersonalInfo.setImageUrl(existingTransporteur.getImageUrl());
-            notifyFrontend("update-personal-info");
+            notifyFrontend();
 
             return updatedPersonalInfo;
         } else {
@@ -96,15 +96,16 @@ public class TransporteurService  implements UserDetailsService {
     }
 
     protected String getEntityTopic(){
-        return "update-transporteur";
+        return "change";
     }
-    public void notifyFrontend(String entityTopic){
+    public void notifyFrontend(){
+        final String entityTopic = getEntityTopic();
         if(entityTopic==null){
 
             return;
         }
-        System.out.println("sending message to front========> "+entityTopic);
-        webSocketService.sendMessage(entityTopic);
+        System.out.println("sending message to front"+entityTopic);
+        webSocketService.sendMessage(entityTopic,"transporteur");
 
     }
 
@@ -147,7 +148,7 @@ public class TransporteurService  implements UserDetailsService {
             updatedPersonalInfo.setNameOnCard(existingTransporteur.getNameOnCard());
             updatedPersonalInfo.setStreetAddress(existingTransporteur.getStreetAddress());
             updatedPersonalInfo.setCity(existingTransporteur.getCity());
-            notifyFrontend("update-paiment-info");
+            notifyFrontend();
 
             return ResponseEntity.ok(updatedPersonalInfo);
         } else {
@@ -211,7 +212,7 @@ public class TransporteurService  implements UserDetailsService {
             updatedPersonalInfo.setDriverLiscence(existingTransporteur.getDriverLiscence());
             updatedPersonalInfo.setImageVehiculeUrl(imageVehiculeUrl);
 
-            notifyFrontend("update-vehicule-info");
+            notifyFrontend();
 
             return ResponseEntity.ok(updatedPersonalInfo);
         } else {

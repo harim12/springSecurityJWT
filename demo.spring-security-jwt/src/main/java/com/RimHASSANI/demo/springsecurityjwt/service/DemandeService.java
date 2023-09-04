@@ -52,7 +52,7 @@ public class DemandeService {
     }
 
     protected String getEntityTopic(){
-        return "add-demande";
+        return "change";
     }
     public void notifyFrontend(){
         final String entityTopic = getEntityTopic();
@@ -61,7 +61,7 @@ public class DemandeService {
             return;
         }
         System.out.println("sending message to front"+entityTopic);
-        webSocketService.sendMessage(entityTopic);
+        webSocketService.sendMessage(entityTopic,"demande");
 
     }
 

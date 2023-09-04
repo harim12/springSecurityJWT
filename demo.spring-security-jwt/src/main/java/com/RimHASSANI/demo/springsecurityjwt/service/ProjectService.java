@@ -23,7 +23,7 @@ public class ProjectService {
     }
 
     protected String getEntityTopic(){
-        return "add-project";
+        return "change";
     }
     public void notifyFrontend(){
         final String entityTopic = getEntityTopic();
@@ -31,7 +31,7 @@ public class ProjectService {
 
             return;
         }
-        webSocketService.sendMessage(entityTopic);
+        webSocketService.sendMessage(entityTopic,"project");
 
     }
 

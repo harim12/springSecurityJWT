@@ -14,7 +14,7 @@ public class WebSocketService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    public void sendMessage(final String topicSuffix){
-        messagingTemplate.convertAndSend("/topic/"+topicSuffix,"Default message from our WS service is coming===>");
+    public void sendMessage(final String topicSuffix,String gotMessage){
+        messagingTemplate.convertAndSend("/topic/"+topicSuffix,"Default message from our WS service is coming "+gotMessage);
     }
 }
