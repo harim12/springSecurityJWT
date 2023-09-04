@@ -92,4 +92,25 @@ public class TransporteurController {
         }
     }
 
+    @PutMapping("/update-vehicule-info")
+    public ResponseEntity<TransporteurVehiculeInfo> updateVehiculeInfo(@RequestParam("testeEntity") String testDataJson,
+                                             @RequestParam(value = "image", required = false) MultipartFile image){
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println("updating vehicule=============================" +
+                ">");
+        try {
+            TransporteurVehiculeInfo transporteurVehiculeInfo = objectMapper.readValue(testDataJson, TransporteurVehiculeInfo.class);
+            String imagePath = "C:\\Users\\hassa\\OneDrive\\Documents\\GitHub\\TransfertFacile\\front\\src\\assets\\assetsBack" + image.getOriginalFilename();
+            Files.copy(image.getInputStream(), Paths.get(imagePath), StandardCopyOption.REPLACE_EXISTING);
+
+            transporteurVehiculeInfo.setImageVehiculeUrl(imagePath);
+
+            return transporteurService.updateTransporteurVehiculeInfo(transporteurVehiculeInfo,imagePath);
+
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
 }

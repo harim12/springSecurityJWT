@@ -190,5 +190,34 @@ public class TransporteurService  implements UserDetailsService {
 
         return null;
     }
+
+    public ResponseEntity<TransporteurVehiculeInfo> updateTransporteurVehiculeInfo(TransporteurVehiculeInfo transporteurVehiculeInfo,String imageVehiculeUrl) {
+        Transporteur existingTransporteur = transporteurRepository.findByEmail(transporteurVehiculeInfo.getEmail()).orElse(null);
+
+        if (existingTransporteur != null) {
+            // Update the payment information
+            existingTransporteur.setVehiculeRegistrationNumber(transporteurVehiculeInfo.getVehiculeRegistrationNumber());
+            existingTransporteur.setNationalIdentity(transporteurVehiculeInfo.getNationalIdentity());
+            existingTransporteur.setDriverLiscence(transporteurVehiculeInfo.getDriverLiscence());
+            existingTransporteur.setImageVehiculeUrl(imageVehiculeUrl);
+
+
+            // Save the updated transporteur with payment info to the database
+            transporteurRepository.save(existingTransporteur);
+            notifyFrontend();
+
+            TransporteurVehiculeInfo updatedPersonalInfo = new TransporteurVehiculeInfo();
+            updatedPersonalInfo.setVehiculeRegistrationNumber(existingTransporteur.getVehiculeRegistrationNumber());
+            updatedPersonalInfo.setNationalIdentity(existingTransporteur.getNationalIdentity());
+            updatedPersonalInfo.setDriverLiscence(existingTransporteur.getDriverLiscence());
+            updatedPersonalInfo.setImageVehiculeUrl(imageVehiculeUrl);
+
+
+            return ResponseEntity.ok(updatedPersonalInfo);
+        } else {
+            // Handle the case where the transporteur with the provided email does not exist
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 
