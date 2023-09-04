@@ -60,6 +60,7 @@ public class DemandeService {
 
             return;
         }
+        System.out.println("sending message to front"+entityTopic);
         webSocketService.sendMessage(entityTopic);
 
     }

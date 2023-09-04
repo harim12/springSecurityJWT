@@ -78,7 +78,6 @@ public class TransporteurService  implements UserDetailsService {
 
             // Save the updated transporteur information back to the database
             transporteurRepository.save(existingTransporteur);
-            notifyFrontend();
 
             TransporteurPersonalInfo updatedPersonalInfo = new TransporteurPersonalInfo();
             updatedPersonalInfo.setFirstName(existingTransporteur.getFirstName());
@@ -86,6 +85,7 @@ public class TransporteurService  implements UserDetailsService {
             updatedPersonalInfo.setCity(existingTransporteur.getCity());
             updatedPersonalInfo.setEmail(existingTransporteur.getEmail());
             updatedPersonalInfo.setImageUrl(existingTransporteur.getImageUrl());
+            notifyFrontend("update-personal-info");
 
             return updatedPersonalInfo;
         } else {
@@ -98,12 +98,12 @@ public class TransporteurService  implements UserDetailsService {
     protected String getEntityTopic(){
         return "update-transporteur";
     }
-    public void notifyFrontend(){
-        final String entityTopic = getEntityTopic();
+    public void notifyFrontend(String entityTopic){
         if(entityTopic==null){
 
             return;
         }
+        System.out.println("sending message to front========> "+entityTopic);
         webSocketService.sendMessage(entityTopic);
 
     }
@@ -147,7 +147,7 @@ public class TransporteurService  implements UserDetailsService {
             updatedPersonalInfo.setNameOnCard(existingTransporteur.getNameOnCard());
             updatedPersonalInfo.setStreetAddress(existingTransporteur.getStreetAddress());
             updatedPersonalInfo.setCity(existingTransporteur.getCity());
-            notifyFrontend();
+            notifyFrontend("update-paiment-info");
 
             return ResponseEntity.ok(updatedPersonalInfo);
         } else {
@@ -204,7 +204,6 @@ public class TransporteurService  implements UserDetailsService {
 
             // Save the updated transporteur with payment info to the database
             transporteurRepository.save(existingTransporteur);
-            notifyFrontend();
 
             TransporteurVehiculeInfo updatedPersonalInfo = new TransporteurVehiculeInfo();
             updatedPersonalInfo.setVehiculeRegistrationNumber(existingTransporteur.getVehiculeRegistrationNumber());
@@ -212,6 +211,7 @@ public class TransporteurService  implements UserDetailsService {
             updatedPersonalInfo.setDriverLiscence(existingTransporteur.getDriverLiscence());
             updatedPersonalInfo.setImageVehiculeUrl(imageVehiculeUrl);
 
+            notifyFrontend("update-vehicule-info");
 
             return ResponseEntity.ok(updatedPersonalInfo);
         } else {
