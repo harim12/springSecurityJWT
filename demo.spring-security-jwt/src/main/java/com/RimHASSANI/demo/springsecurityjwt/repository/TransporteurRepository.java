@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface TransporteurRepository extends JpaRepository<Transporteur,Integer> {
     Optional<Transporteur> findByEmail(String email);
 
-    @Query(value = "SELECT t.first_name, t.last_name, t.car_type FROM transporteurs t WHERE t.email = :email", nativeQuery = true)
+    @Query(value = "SELECT t.first_name, t.last_name, t.image_vehicule_url FROM transporteurs t WHERE t.email = :email", nativeQuery = true)
     Tuple getTransporteurInfoByEmail(String email);
 
     @Query(value = "SELECT t.first_name, t.last_name,t.city,t.image_url FROM transporteurs t WHERE t.email = :email", nativeQuery = true)

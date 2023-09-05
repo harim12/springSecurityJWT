@@ -43,9 +43,9 @@ public class TransporteurService  implements UserDetailsService {
         if (tuple != null) {
             String firstName = tuple.get("first_name", String.class);
             String lastName = tuple.get("last_name", String.class);
-            String carType = tuple.get("car_type", String.class);
+            String vehiculeImageUrl = tuple.get("image_vehicule_url", String.class);
 
-            return new TransporteurInfo(firstName, lastName, carType);
+            return new TransporteurInfo(firstName, lastName, vehiculeImageUrl);
         }
 
         return null;

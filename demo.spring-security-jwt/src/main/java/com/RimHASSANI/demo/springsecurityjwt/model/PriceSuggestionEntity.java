@@ -23,6 +23,6 @@ public class PriceSuggestionEntity {
     private String firstName;
     private String lastName;
     private String email;
-    private String carType;
+    private String vehiculeImageUrl;
     private Double priceSuggestion;
 }
