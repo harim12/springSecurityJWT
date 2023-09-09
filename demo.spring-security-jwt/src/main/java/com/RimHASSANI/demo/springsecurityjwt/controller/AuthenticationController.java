@@ -57,25 +57,24 @@ public class AuthenticationController {
         }
     }
 
+
     @GetMapping("/user/verifyRegistration")
-    public String verifyRegistration(@RequestParam("token") String token) {
+    public ModelAndView verifyRegistration(@RequestParam("token") String token) {
+        ModelAndView modelAndView = new ModelAndView();
+
         String result = authentificationUserService.validateVerificationToken(token);
-        if(result.equalsIgnoreCase("valid")) {
-            return "User Verified Successfully";
+
+        if (result.equalsIgnoreCase("valid")) {
+            modelAndView.addObject("message", "User Verified Successfully");
+        } else {
+            modelAndView.addObject("message", "Bad User");
         }
-        return "Bad User";
+
+        // Pass the token as a model attribute
+        modelAndView.setViewName("verificationPage"); // Specify the name of your HTML template here
+        return modelAndView;
     }
 
-
-    @GetMapping("/user/resendVerifyToken")
-    public String resendVerificationToken(@RequestParam("token") String oldToken,
-                                          HttpServletRequest request) {
-        VerificationTokenUser verificationToken
-                = authentificationUserService.generateNewVerificationToken(oldToken);
-        ApplicationUser user = verificationToken.getUser();
-        resendVerificationTokenMail(user, applicationUrl(request), verificationToken);
-        return "Verification Link Sent";
-    }
 
     @PostMapping("/user/login")
     public LoginResponseUserDTO loginUser(@RequestBody RegistrationUserDTO body){
