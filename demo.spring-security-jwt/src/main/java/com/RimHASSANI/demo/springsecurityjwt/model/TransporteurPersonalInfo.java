@@ -12,6 +12,7 @@ public class TransporteurPersonalInfo {
     private String firstName;
     private String lastName;
     private String imageUrl;
+    private Integer phoneNumber;
     private String city;
     private String email;
 }

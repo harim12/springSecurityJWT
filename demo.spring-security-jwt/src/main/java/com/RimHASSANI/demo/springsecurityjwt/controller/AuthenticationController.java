@@ -14,6 +14,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/auth")
@@ -117,15 +118,23 @@ public class AuthenticationController {
                 body.getPassword());
     }
 
-    @GetMapping("/transporteur/verifyRegistration")
-    public String verifyRegistrationTransporteur(@RequestParam("token") String token) {
-        String result = authentificationTransporteurService.validateVerificationToken(token);
-        if(result.equalsIgnoreCase("valid")) {
 
-            return "Transporteur Verified Successfully";
+    @GetMapping("/transporteur/verifyRegistration")
+    public ModelAndView verifyRegistrationTransporteur(@RequestParam("token") String token) {
+        ModelAndView modelAndView = new ModelAndView();
+        String result = authentificationTransporteurService.validateVerificationToken(token);
+
+        if (result.equalsIgnoreCase("valid")) {
+            modelAndView.addObject("message", "Transporteur Verified Successfully");
+        } else {
+            modelAndView.addObject("message", "Bad transporteur");
         }
-        return "Bad transporteur";
+
+        modelAndView.setViewName("verificationPage"); // Specify the name of your HTML template here
+        return modelAndView;
     }
+
+
 
 
     @GetMapping("/transporteur/resendVerifyToken")

@@ -3,10 +3,11 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/easytransfert
+    url: jdbc:mysql://localhost:3306/easytransfertteste
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     show-sql: true
     hibernate:
@@ -20,6 +21,15 @@ spring:
   devtools:
     restart:
       enabled=true:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    content-type: text/html
+    cache: false
+
+
 
 
 

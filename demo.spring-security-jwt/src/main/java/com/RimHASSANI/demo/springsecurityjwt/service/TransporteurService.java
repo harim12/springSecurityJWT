@@ -59,8 +59,9 @@ public class TransporteurService  implements UserDetailsService {
             String lastName = tuple.get("last_name", String.class);
             String  imageUrl  = tuple.get("image_url",String.class);
             String city = tuple.get("city",String.class);
+            Integer phoneNumber = tuple.get("phone_number",Integer.class);
 
-            return new TransporteurPersonalInfo(firstName, lastName,imageUrl,city,email);
+            return new TransporteurPersonalInfo(firstName, lastName,imageUrl,phoneNumber,city,email);
         }
 
         return null;
